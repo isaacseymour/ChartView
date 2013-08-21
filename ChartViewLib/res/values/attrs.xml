@@ -18,10 +18,14 @@
         <attr name="gridLineWidth" format="reference|dimension" />
         <attr name="gridLinesHorizontal" format="reference|integer" />
         <attr name="gridLinesVertical" format="reference|integer" />
+        <attr name="gridLinesXGap" format="reference|integer" />
+        <attr name="gridLinesYGap" format="reference|integer" />
         <attr name="leftLabelWidth" format="reference|dimension" />
         <attr name="topLabelHeight" format="reference|dimension" />
         <attr name="rightLabelWidth" format="reference|dimension" />
         <attr name="bottomLabelHeight" format="reference|dimension" />
+		<attr name="labelTextColor" format="reference|color" />
+		<attr name="labelTextSize" format="reference|dimension"/>
     </declare-styleable>
 
 </resources>

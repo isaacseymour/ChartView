@@ -1,13 +1,14 @@
 package com.fima.chartview;
 
-import java.util.ArrayList;
+import java.util.SortedSet;
 import java.util.Collections;
-import java.util.List;
+import java.util.Collection;
+import java.util.TreeSet;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-
+	
 public abstract class AbstractSeries {
 	//////////////////////////////////////////////////////////////////////////////////////
 	// PRIVATE MEMBERS
@@ -15,11 +16,8 @@ public abstract class AbstractSeries {
 
 	protected Paint mPaint = new Paint();
 
-	protected float mScaleX = 1;
-	protected float mScaleY = 1;
+	protected SortedSet<AbstractPoint> mPoints = Collections.synchronizedSortedSet(new TreeSet<AbstractPoint>());
 
-	private List<AbstractPoint> mPoints;
-	private boolean mPointsSorted = false;
 
 	private double mMinX = Double.MAX_VALUE;
 	private double mMaxX = Double.MIN_VALUE;
@@ -28,13 +26,12 @@ public abstract class AbstractSeries {
 
 	private double mRangeX = 0;
 	private double mRangeY = 0;
+	protected abstract void drawPoint(Canvas canvas, AbstractPoint point, float scaleX, float scaleY, Rect gridBounds);
 
-	protected abstract void drawPoint(Canvas canvas, AbstractPoint point, float scaleX, float scalY, Rect gridBounds);
 
 	//////////////////////////////////////////////////////////////////////////////////////
 	// CONSTRUCTORS
 	//////////////////////////////////////////////////////////////////////////////////////
-
 	public AbstractSeries() {
 		mPaint.setAntiAlias(true);
 	}
@@ -43,32 +40,47 @@ public abstract class AbstractSeries {
 	// PUBLIC METHODS
 	//////////////////////////////////////////////////////////////////////////////////////
 
-	public List<AbstractPoint> getPoints() {
-		Collections.sort(mPoints);
+	public SortedSet<AbstractPoint> getPoints() {
 		return mPoints;
 	}
 
-	public void setPoints(List<? extends AbstractPoint> points) {
-		mPoints = new ArrayList<AbstractPoint>();
+	public void setPoints(Collection<? extends AbstractPoint> points) {
+		mPoints.clear();
 		mPoints.addAll(points);
 
-		sortPoints();
 		resetRange();
 
-		for (AbstractPoint point : mPoints) {
+		for (AbstractPoint point : mPoints)
 			extendRange(point.getX(), point.getY());
-		}
 	}
 
 	public void addPoint(AbstractPoint point) {
-		if (mPoints == null) {
-			mPoints = new ArrayList<AbstractPoint>();
-		}
-
 		extendRange(point.getX(), point.getY());
 		mPoints.add(point);
+	}
 
-		mPointsSorted = false;
+	// Remove a point from the series. Avoid using this as it's potentially very costly!
+	public void removePoint(AbstractPoint point) {
+		// Is this the min/max point?
+		mPoints.remove(point);
+
+		// Range corrections:
+		// If this was at the very top or bottom we're in trouble. We have to entirely re-calculate the range to condense it in vertically
+		if(point.getY() == mMinY || point.getY() == mMaxY) {
+			resetRange();
+
+			for (AbstractPoint p : mPoints)
+				extendRange(p.getX(), p.getY());
+		}
+
+		// X-range corrections are much simpler as the points are sorted by x-value
+		if(point.getX() == mMinX) { // condense in from the left
+			mMinX = mPoints.first().getX();
+			mRangeX = mMaxX - mMinX;
+		} else if(point.getX() == mMaxX) { // condense in from the right
+			mMaxX = mPoints.last().getX();
+			mRangeX = mMaxX - mMinX;
+		}
 	}
 
 	// Line properties
@@ -85,13 +97,6 @@ public abstract class AbstractSeries {
 	// PRIVATE METHODS
 	//////////////////////////////////////////////////////////////////////////////////////
 
-	private void sortPoints() {
-		if (!mPointsSorted) {
-			Collections.sort(mPoints);
-			mPointsSorted = true;
-		}
-	}
-
 	private void resetRange() {
 		mMinX = Double.MAX_VALUE;
 		mMaxX = Double.MIN_VALUE;
@@ -103,59 +108,42 @@ public abstract class AbstractSeries {
 	}
 
 	private void extendRange(double x, double y) {
-		if (x < mMinX) {
-			mMinX = x;
-		}
-
-		if (x > mMaxX) {
-			mMaxX = x;
-		}
-
-		if (y < mMinY) {
-			mMinY = y;
-		}
-
-		if (y > mMaxY) {
-			mMaxY = y;
-		}
+		if (x < mMinX) mMinX = x;
+		if (x > mMaxX) mMaxX = x;
+		if (y < mMinY) mMinY = y;
+		if (y > mMaxY) mMaxY = y;
 
 		mRangeX = mMaxX - mMinX;
 		mRangeY = mMaxY - mMinY;
 	}
 
-	double getMinX() {
+	public double getMinX() {
 		return mMinX;
 	}
 
-	double getMaxX() {
+	public double getMaxX() {
 		return mMaxX;
 	}
 
-	double getMinY() {
+	public double getMinY() {
 		return mMinY;
 	}
 
-	double getMaxY() {
+	public double getMaxY() {
 		return mMaxY;
 	}
 
-	double getRangeX() {
+	public double getRangeX() {
 		return mRangeX;
 	}
 
-	double getRangeY() {
+	public double getRangeY() {
 		return mRangeY;
 	}
 
-	void draw(Canvas canvas, Rect gridBounds, RectD valueBounds) {
-		sortPoints();
-
-		final float scaleX = (float) gridBounds.width() / (float) valueBounds.width();
-		final float scaleY = (float) gridBounds.height() / (float) valueBounds.height();
-
-		for (AbstractPoint point : mPoints) {
+	void draw(Canvas canvas, Rect gridBounds, float scaleX, float scaleY) {
+		for (AbstractPoint point : mPoints)
 			drawPoint(canvas, point, scaleX, scaleY, gridBounds);
-		}
 
 		onDrawingComplete();
 	}
@@ -196,5 +184,14 @@ public abstract class AbstractSeries {
 		public int compareTo(AbstractPoint another) {
 			return Double.compare(mX, another.mX);
 		}
+
+		@Override
+		public String toString() {
+			return "("+mX+", "+mY+")";
+		}
+	}
+
+	public String toString() {
+		return mPoints.toString();
 	}
 }

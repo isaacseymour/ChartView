@@ -3,9 +3,9 @@ package com.fima.chartview;
 import android.widget.BaseAdapter;
 
 public abstract class LabelAdapter extends BaseAdapter {
-	private double[] mValues;
+	private Double[] mValues;
 
-	void setValues(double[] points) {
+	void setValues(Double[] points) {
 		mValues = points;
 	}
 
@@ -22,4 +22,6 @@ public abstract class LabelAdapter extends BaseAdapter {
 	public long getItemId(int position) {
 		return position;
 	}
+
+	public abstract String getLabel(double position);
 }

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *	  http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -47,7 +47,7 @@ public class RectD implements Parcelable {
 	 * top <= bottom.
 	 *
 	 * @param left   The X coordinate of the left side of the rectangle
-	 * @param top    The Y coordinate of the top of the rectangle
+	 * @param top	The Y coordinate of the top of the rectangle
 	 * @param right  The X coordinate of the right side of the rectangle
 	 * @param bottom The Y coordinate of the bottom of the rectangle
 	 */
@@ -63,7 +63,7 @@ public class RectD implements Parcelable {
 	 * rectangle (which is left unmodified).
 	 *
 	 * @param r The rectangle whose coordinates are copied into the new
-	 *          rectangle.
+	 *		  rectangle.
 	 */
 	public RectD(RectD r) {
 		left = r.left;
@@ -112,6 +112,7 @@ public class RectD implements Parcelable {
 
 	/**
 	 * Return a string representation of the rectangle in a compact form.
+	 *
 	 * @hide
 	 */
 	public String toShortString(StringBuilder sb) {
@@ -130,6 +131,7 @@ public class RectD implements Parcelable {
 
 	/**
 	 * Print short representation to given writer.
+	 *
 	 * @hide
 	 */
 	public void printShortString(PrintWriter pw) {
@@ -153,7 +155,7 @@ public class RectD implements Parcelable {
 
 	/**
 	 * @return the rectangle's width. This does not check for a valid rectangle
-	 * (i.e. left <= right) so the result may be negative.
+	 *		 (i.e. left <= right) so the result may be negative.
 	 */
 	public final double width() {
 		return right - left;
@@ -161,7 +163,7 @@ public class RectD implements Parcelable {
 
 	/**
 	 * @return the rectangle's height. This does not check for a valid rectangle
-	 * (i.e. top <= bottom) so the result may be negative.
+	 *		 (i.e. top <= bottom) so the result may be negative.
 	 */
 	public final double height() {
 		return bottom - top;
@@ -169,7 +171,7 @@ public class RectD implements Parcelable {
 
 	/**
 	 * @return the horizontal center of the rectangle. This does not check for
-	 * a valid rectangle (i.e. left <= right)
+	 *		 a valid rectangle (i.e. left <= right)
 	 */
 	public final double centerX() {
 		return (left + right) * 0.5f;
@@ -177,7 +179,7 @@ public class RectD implements Parcelable {
 
 	/**
 	 * @return the vertical center of the rectangle. This does not check for
-	 * a valid rectangle (i.e. top <= bottom)
+	 *		 a valid rectangle (i.e. top <= bottom)
 	 */
 	public final double centerY() {
 		return (top + bottom) * 0.5f;
@@ -196,7 +198,7 @@ public class RectD implements Parcelable {
 	 * left <= right and top <= bottom.
 	 *
 	 * @param left   The X coordinate of the left side of the rectangle
-	 * @param top    The Y coordinate of the top of the rectangle
+	 * @param top	The Y coordinate of the top of the rectangle
 	 * @param right  The X coordinate of the right side of the rectangle
 	 * @param bottom The Y coordinate of the bottom of the rectangle
 	 */
@@ -211,7 +213,7 @@ public class RectD implements Parcelable {
 	 * Copy the coordinates from src into this rectangle.
 	 *
 	 * @param src The rectangle whose coordinates are copied into this
-	 *           rectangle.
+	 *			rectangle.
 	 */
 	public void set(RectD src) {
 		this.left = src.left;
@@ -224,7 +226,7 @@ public class RectD implements Parcelable {
 	 * Copy the coordinates from src into this rectangle.
 	 *
 	 * @param src The rectangle whose coordinates are copied into this
-	 *           rectangle.
+	 *			rectangle.
 	 */
 	public void set(Rect src) {
 		this.left = src.left;
@@ -251,8 +253,8 @@ public class RectD implements Parcelable {
 	 * Offset the rectangle to a specific (left, top) position,
 	 * keeping its width and height the same.
 	 *
-	 * @param newLeft   The new "left" coordinate for the rectangle
-	 * @param newTop    The new "top" coordinate for the rectangle
+	 * @param newLeft The new "left" coordinate for the rectangle
+	 * @param newTop  The new "top" coordinate for the rectangle
 	 */
 	public void offsetTo(double newLeft, double newTop) {
 		right += newLeft - left;
@@ -286,7 +288,7 @@ public class RectD implements Parcelable {
 	 * @param x The X coordinate of the point being tested for containment
 	 * @param y The Y coordinate of the point being tested for containment
 	 * @return true iff (x,y) are contained by the rectangle, where containment
-	 *              means left <= x < right and top <= y < bottom
+	 *		 means left <= x < right and top <= y < bottom
 	 */
 	public boolean contains(double x, double y) {
 		return left < right && top < bottom // check for empty first
@@ -298,17 +300,17 @@ public class RectD implements Parcelable {
 	 * to this rectangle. i.e. is this rectangle a superset of the specified
 	 * rectangle. An empty rectangle never contains another rectangle.
 	 *
-	 * @param left The left side of the rectangle being tested for containment
-	 * @param top The top of the rectangle being tested for containment
-	 * @param right The right side of the rectangle being tested for containment
+	 * @param left   The left side of the rectangle being tested for containment
+	 * @param top	The top of the rectangle being tested for containment
+	 * @param right  The right side of the rectangle being tested for containment
 	 * @param bottom The bottom of the rectangle being tested for containment
 	 * @return true iff the the 4 specified sides of a rectangle are inside or
-	 *              equal to this rectangle
+	 *		 equal to this rectangle
 	 */
 	public boolean contains(double left, double top, double right, double bottom) {
 		// check for empty first
 		return this.left < this.right && this.top < this.bottom
-		// now check for containment
+				// now check for containment
 				&& this.left <= left && this.top <= top && this.right >= right && this.bottom >= bottom;
 	}
 
@@ -318,12 +320,12 @@ public class RectD implements Parcelable {
 	 *
 	 * @param r The rectangle being tested for containment.
 	 * @return true iff the specified rectangle r is inside or equal to this
-	 *              rectangle
+	 *		 rectangle
 	 */
 	public boolean contains(RectD r) {
 		// check for empty first
 		return this.left < this.right && this.top < this.bottom
-		// now check for containment
+				// now check for containment
 				&& left <= r.left && top <= r.top && right >= r.right && bottom >= r.bottom;
 	}
 
@@ -334,16 +336,16 @@ public class RectD implements Parcelable {
 	 * performed to see if either rectangle is empty. Note: To just test for
 	 * intersection, use intersects()
 	 *
-	 * @param left The left side of the rectangle being intersected with this
-	 *             rectangle
-	 * @param top The top of the rectangle being intersected with this rectangle
-	 * @param right The right side of the rectangle being intersected with this
-	 *              rectangle.
+	 * @param left   The left side of the rectangle being intersected with this
+	 *			   rectangle
+	 * @param top	The top of the rectangle being intersected with this rectangle
+	 * @param right  The right side of the rectangle being intersected with this
+	 *			   rectangle.
 	 * @param bottom The bottom of the rectangle being intersected with this
-	 *             rectangle.
+	 *			   rectangle.
 	 * @return true if the specified rectangle and this rectangle intersect
-	 *              (and this rectangle is then set to that intersection) else
-	 *              return false and do not change this rectangle.
+	 *		 (and this rectangle is then set to that intersection) else
+	 *		 return false and do not change this rectangle.
 	 */
 	public boolean intersect(double left, double top, double right, double bottom) {
 		if (this.left < right && left < this.right && this.top < bottom && top < this.bottom) {
@@ -372,8 +374,8 @@ public class RectD implements Parcelable {
 	 *
 	 * @param r The rectangle being intersected with this rectangle.
 	 * @return true if the specified rectangle and this rectangle intersect
-	 *              (and this rectangle is then set to that intersection) else
-	 *              return false and do not change this rectangle.
+	 *		 (and this rectangle is then set to that intersection) else
+	 *		 return false and do not change this rectangle.
 	 */
 	public boolean intersect(RectD r) {
 		return intersect(r.left, r.top, r.right, r.bottom);
@@ -388,8 +390,8 @@ public class RectD implements Parcelable {
 	 * @param a The first rectangle being intersected with
 	 * @param b The second rectangle being intersected with
 	 * @return true iff the two specified rectangles intersect. If they do, set
-	 *              this rectangle to that intersection. If they do not, return
-	 *              false and do not change this rectangle.
+	 *		 this rectangle to that intersection. If they do not, return
+	 *		 false and do not change this rectangle.
 	 */
 	public boolean setIntersect(RectD a, RectD b) {
 		if (a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom) {
@@ -408,13 +410,13 @@ public class RectD implements Parcelable {
 	 * if either rectangle is empty. To record the intersection, use intersect()
 	 * or setIntersect().
 	 *
-	 * @param left The left side of the rectangle being tested for intersection
-	 * @param top The top of the rectangle being tested for intersection
-	 * @param right The right side of the rectangle being tested for
-	 *              intersection
+	 * @param left   The left side of the rectangle being tested for intersection
+	 * @param top	The top of the rectangle being tested for intersection
+	 * @param right  The right side of the rectangle being tested for
+	 *			   intersection
 	 * @param bottom The bottom of the rectangle being tested for intersection
 	 * @return true iff the specified rectangle intersects this rectangle. In
-	 *              no event is this rectangle modified.
+	 *		 no event is this rectangle modified.
 	 */
 	public boolean intersects(double left, double top, double right, double bottom) {
 		return this.left < right && left < this.right && this.top < bottom && top < this.bottom;
@@ -428,7 +430,7 @@ public class RectD implements Parcelable {
 	 * @param a The first rectangle being tested for intersection
 	 * @param b The second rectangle being tested for intersection
 	 * @return true iff the two specified rectangles intersect. In no event are
-	 *              either of the rectangles modified.
+	 *		 either of the rectangles modified.
 	 */
 	public static boolean intersects(RectD a, RectD b) {
 		return a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom;
@@ -439,9 +441,9 @@ public class RectD implements Parcelable {
 	 * specified rectangle is empty, nothing is done. If this rectangle is empty
 	 * it is set to the specified rectangle.
 	 *
-	 * @param left The left edge being unioned with this rectangle
-	 * @param top The top edge being unioned with this rectangle
-	 * @param right The right edge being unioned with this rectangle
+	 * @param left   The left edge being unioned with this rectangle
+	 * @param top	The top edge being unioned with this rectangle
+	 * @param right  The right edge being unioned with this rectangle
 	 * @param bottom The bottom edge being unioned with this rectangle
 	 */
 	public void union(double left, double top, double right, double bottom) {
@@ -455,8 +457,7 @@ public class RectD implements Parcelable {
 					this.right = right;
 				if (this.bottom < bottom)
 					this.bottom = bottom;
-			}
-			else {
+			} else {
 				this.left = left;
 				this.top = top;
 				this.right = right;
@@ -486,14 +487,12 @@ public class RectD implements Parcelable {
 	public void union(double x, double y) {
 		if (x < left) {
 			left = x;
-		}
-		else if (x > right) {
+		} else if (x > right) {
 			right = x;
 		}
 		if (y < top) {
 			top = y;
-		}
-		else if (y > bottom) {
+		} else if (y > bottom) {
 			bottom = y;
 		}
 	}
@@ -528,6 +527,7 @@ public class RectD implements Parcelable {
 	/**
 	 * Write this rectangle to the specified parcel. To restore a rectangle from
 	 * a parcel, use readFromParcel()
+	 *
 	 * @param out The parcel to write the rectangle's coordinates into
 	 */
 	public void writeToParcel(Parcel out, int flags) {
