@@ -16,8 +16,7 @@ public abstract class AbstractSeries {
 
 	protected Paint mPaint = new Paint();
 
-	protected SortedSet<AbstractPoint> mPoints = Collections.synchronizedSortedSet(new TreeSet<AbstractPoint>());
-
+	private SortedSet<AbstractPoint> mPoints = Collections.synchronizedSortedSet(new TreeSet<AbstractPoint>());
 
 	private double mMinX = Double.MAX_VALUE;
 	private double mMaxX = Double.MIN_VALUE;
