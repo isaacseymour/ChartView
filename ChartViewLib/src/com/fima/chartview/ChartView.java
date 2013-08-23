@@ -386,10 +386,11 @@ public class ChartView extends RelativeLayout {
 			canvas.drawLine(mGridBounds.left, mGridBounds.bottom, mGridBounds.right, mGridBounds.bottom, mPaint);
 		}
 
+		int drawn = 0;
 		for(double point = minPoint % step == 0 ? minPoint : // The left bound magically should be a grid line!
 				minPoint + (step - (minPoint % step)); // Move to the first grid line
-					point <= maxPoint; // Go right up to the maximum point
-					point += step // Move along by the specified amount each time
+					point <= maxPoint && drawn < 50; // Go right up to the maximum point, but because this comparison isn't 100% reliable, draw at most 50 lines
+					point += step, drawn++ // Move along by the specified amount each time
 				) {
 			// Get the drawing co-ordinate for this line: get the distance it should be in value from the left, scale
 			// that to the drawing distance, and move it away from the origin co-ordinate
