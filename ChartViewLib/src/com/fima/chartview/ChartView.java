@@ -163,12 +163,6 @@ public class ChartView extends RelativeLayout {
 		// Add the series
 		mSeries.add(series);
 
-		// Update labels
-		if(mLeftLabelAdapter != null) setVerticalAdapterValues(mLeftLabelAdapter);
-		if(mRightLabelAdapter != null) setVerticalAdapterValues(mRightLabelAdapter);
-		if(mTopLabelAdapter != null) setHorizontalAdapterValues(mTopLabelAdapter);
-		if(mBottomLabelAdapter!= null) setHorizontalAdapterValues(mBottomLabelAdapter);
-
 		// Make sure the chart is the right size
 		resetRange();
 
@@ -251,6 +245,27 @@ public class ChartView extends RelativeLayout {
 		mGridFixedYGap = gap;
 	}
 
+	// Reset the visible range to show nothing
+	public void resetRange() {
+		mMinX = Double.MAX_VALUE;
+		mMaxX = Double.MIN_VALUE;
+		mMinY = Double.MAX_VALUE;
+		mMaxY = Double.MIN_VALUE;
+
+		for(AbstractSeries series : mSeries) {
+			extendRange(series.getMinX(), series.getMinY());
+			extendRange(series.getMaxX(), series.getMaxY());
+		}
+
+		Log.d(TAG, "New chart range: [" + mMinX + "," + mMinY + "][" + mMaxX + "," + mMaxY + "]");
+
+		// Update labels
+		if(mLeftLabelAdapter != null) setVerticalAdapterValues(mLeftLabelAdapter);
+		if(mRightLabelAdapter != null) setVerticalAdapterValues(mRightLabelAdapter);
+		if(mTopLabelAdapter != null) setHorizontalAdapterValues(mTopLabelAdapter);
+		if(mBottomLabelAdapter!= null) setHorizontalAdapterValues(mBottomLabelAdapter);
+	}
+
 	//////////////////////////////////////////////////////////////////////////////////////
 	// OVERRIDDEN METHODS
 	//////////////////////////////////////////////////////////////////////////////////////
@@ -317,21 +332,6 @@ public class ChartView extends RelativeLayout {
 	/****
 	 * Range calculations
 	 */
-
-	// Reset the visible range to show nothing
-	private void resetRange() {
-		mMinX = Double.MAX_VALUE;
-		mMaxX = Double.MIN_VALUE;
-		mMinY = Double.MAX_VALUE;
-		mMaxY = Double.MIN_VALUE;
-
-		for(AbstractSeries series : mSeries) {
-			extendRange(series.getMinX(), series.getMinY());
-			extendRange(series.getMaxX(), series.getMaxY());
-		}
-
-		Log.d(TAG, "New chart range: [" + mMinX + "," + mMinY + "][" + mMaxX + "," + mMaxY + "]");
-	}
 
 	// Expand the range of values shown
 	private void extendRange(double x, double y) {

@@ -16,7 +16,7 @@ public abstract class AbstractSeries {
 
 	protected Paint mPaint = new Paint();
 
-	private SortedSet<AbstractPoint> mPoints = Collections.synchronizedSortedSet(new TreeSet<AbstractPoint>());
+	private final SortedSet<AbstractPoint> mPoints = Collections.synchronizedSortedSet(new TreeSet<AbstractPoint>());
 
 	private double mMinX = Double.MAX_VALUE;
 	private double mMaxX = Double.MIN_VALUE;
@@ -47,10 +47,7 @@ public abstract class AbstractSeries {
 		mPoints.clear();
 		mPoints.addAll(points);
 
-		resetRange();
-
-		for (AbstractPoint point : mPoints)
-			extendRange(point.getX(), point.getY());
+		recalculateRange();
 	}
 
 	public void addPoint(AbstractPoint point) {
@@ -65,12 +62,7 @@ public abstract class AbstractSeries {
 
 		// Range corrections:
 		// If this was at the very top or bottom we're in trouble. We have to entirely re-calculate the range to condense it in vertically
-		if(point.getY() == mMinY || point.getY() == mMaxY) {
-			resetRange();
-
-			for (AbstractPoint p : mPoints)
-				extendRange(p.getX(), p.getY());
-		}
+		if(point.getY() == mMinY || point.getY() == mMaxY) recalculateRange();
 
 		// X-range corrections are much simpler as the points are sorted by x-value
 		if(point.getX() == mMinX) { // condense in from the left
@@ -114,6 +106,13 @@ public abstract class AbstractSeries {
 
 		mRangeX = mMaxX - mMinX;
 		mRangeY = mMaxY - mMinY;
+	}
+
+	protected void recalculateRange() {
+		resetRange();
+
+		for (AbstractPoint point : mPoints)
+			extendRange(point.getX(), point.getY());
 	}
 
 	public double getMinX() {
