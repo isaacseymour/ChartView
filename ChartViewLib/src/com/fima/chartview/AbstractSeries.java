@@ -139,7 +139,11 @@ public abstract class AbstractSeries {
 		return mRangeY;
 	}
 
+	protected void onDrawRequested(Canvas canvas, Rect gridBounds, float scaleX, float scaleY) {}
+
 	void draw(Canvas canvas, Rect gridBounds, float scaleX, float scaleY) {
+		onDrawRequested(canvas, gridBounds, scaleX, scaleY);
+
 		for (AbstractPoint point : mPoints)
 			drawPoint(canvas, point, scaleX, scaleY, gridBounds);
 
