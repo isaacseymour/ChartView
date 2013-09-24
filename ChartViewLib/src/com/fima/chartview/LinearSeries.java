@@ -18,7 +18,7 @@ public class LinearSeries extends AbstractSeries {
             mLastPoint = new PointF();
 
 		// This covers up the possible gaps between different lines
-		canvas.drawCircle(x, y, 1.7F, mPaint);
+		canvas.drawCircle(x, y, (mPaint.getStrokeWidth()/2) - 0.2F, mPaint);
 
         mLastPoint.set(x, y);
     }
